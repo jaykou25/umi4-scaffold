@@ -53,4 +53,4 @@ export function patchClientRoutes({ routes }) {
 
 ProLayout的api繁多, 代表它的每个部分都可以定制.
 
-
+![prolayout api](https://github.com/jaykou25/umi4-scaffold/blob/master/proLayout.png)]
