@@ -1,10 +1,17 @@
 import { Outlet } from "umi";
+import { DefaultFooter } from "@ant-design/pro-layout";
+import styles from "./styles.less";
 
 const BlankLayout = () => {
   return (
-    <div>
-      <div>blank layout </div>
-      <Outlet />
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <Outlet />
+      </div>
+      <DefaultFooter
+        copyright={`${new Date().getFullYear()} 资源开发有限公司`}
+        links={[]}
+      />
     </div>
   );
 };

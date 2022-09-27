@@ -8,7 +8,7 @@ import { notification } from "antd";
 import { clearToken, getToken } from "@/utils/auth";
 
 const service = axios.create({
-  baseURL: "/api", // 由nginx转发
+  baseURL: "/", // 由nginx转发
 });
 
 // 添加请求拦截器

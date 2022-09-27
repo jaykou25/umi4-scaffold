@@ -3,3 +3,7 @@ import request from "@/utils/request";
 export async function queryMenu(): Promise<any> {
   return request("/api/menus/build");
 }
+
+export async function queryCode() {
+  return request(`/auth/code`);
+}
