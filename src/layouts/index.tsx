@@ -1,21 +1,29 @@
-import { Link, Outlet } from 'umi';
-import styles from './index.less';
+import { useLocation } from "umi";
+import BasicLayout from "./basicLayout";
+import BlankLayout from "./blankLayout";
 
-export default function Layout() {
-  return (
-    <div className={styles.navs}>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/docs">Docs</Link>
-        </li>
-        <li>
-          <a href="https://github.com/umijs/umi">Github</a>
-        </li>
-      </ul>
-      <Outlet />
-    </div>
-  );
+export default function Layout(props) {
+  /**
+   * 大部分路由都走BasicLayout
+   * 登录页, 404页等可以走其它路由
+   */
+  const { pathname } = useLocation();
+
+  // 401页面
+  if (/^\/401/.test(pathname)) {
+    return <BlankLayout />;
+  }
+
+  // sso
+  if (/^\/sso/.test(pathname)) {
+    return <BlankLayout />;
+  }
+
+  // 登陆页面
+  if (/^\/user/.test(pathname)) {
+    return <BlankLayout />;
+  }
+
+  // 正常业务页面
+  return <BasicLayout />;
 }

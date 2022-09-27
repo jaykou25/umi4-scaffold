@@ -1,6 +1,9 @@
 {
+  "name": "umi4-scaffold",
+  "version": "0.1.0",
+  "description": "基于umi4的业务后台脚手架.",
   "private": true,
-  "author":"gaojie <gaojie@wxcloud.com>",
+  "author": "jay.kou <jay.kou@qq.com>",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
@@ -9,6 +12,8 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "antd": "^4.23.2",
+    "@ant-design/pro-layout": "^6",
     "umi": "^4.0.22"
   },
   "devDependencies": {
