@@ -1,15 +1,17 @@
 import { LockTwoTone, UserOutlined, ProfileOutlined } from "@ant-design/icons";
-import { Alert, Input, Form } from "antd";
+import { Alert, Input, Form, message } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import ProForm, { ProFormText } from "@ant-design/pro-form";
 import type { ProFormInstance } from "@ant-design/pro-form";
-import { Link } from "umi";
+import { history, useModel } from "umi";
 import Logo from "@/assets/metro_logo.png";
 
 import styles from "./index.less";
 import { encrypt } from "@/utils/jsencrypt";
-import { queryCode } from "@/apis";
+import { postLogin, queryCode } from "@/apis";
 import { SITE } from "../../../../config/config";
+import { isLogin, setToken } from "@/utils/auth";
+import { goto } from "@/utils/login";
 
 const LoginMessage: React.FC<{
   content: string;
@@ -24,15 +26,17 @@ const LoginMessage: React.FC<{
   />
 );
 
-const UserLogin: React.FC<any> = (props) => {
-  const { submitting } = props;
+const UserLogin: React.FC<any> = () => {
   const [codeData, setCodeData] = useState<{ img: string; uuid: string }>({
     img: "",
     uuid: "",
   });
   const [status, setStatus] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
 
   const formRef = useRef<ProFormInstance>();
+
+  const { refresh } = useModel("@@initialState");
 
   useEffect(() => {
     // 获取code
@@ -52,17 +56,57 @@ const UserLogin: React.FC<any> = (props) => {
       uuid: codeData.uuid,
     };
 
-    console.log({ payload });
+    setSubmitting(true);
+
+    postLogin(payload)
+      .then((res: any) => {
+        setStatus(0);
+
+        setToken(res.token);
+        message.success("登录成功！");
+
+        refresh();
+
+        goto();
+      })
+      .catch((e) => {
+        const { message } = e;
+        handleQueryCode();
+
+        if (message === "验证码错误") {
+          setStatus(2);
+        } else if (message === "验证码不存在或已过期") {
+          setStatus(3);
+        } else {
+          setStatus(1);
+        }
+
+        // 登录失败清除验证码
+        formRef?.current?.setFieldsValue({ code: "" });
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   };
 
   return (
     <div>
       <div className={styles.top}>
         <div className={styles.header}>
-          <Link to="/">
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              if (!isLogin()) {
+                message.info("请先登录");
+                return;
+              }
+
+              history.push("/");
+            }}
+          >
             <img alt="logo" className={styles.logo} src={Logo} />
             <span className={styles.title}>{SITE.name}</span>
-          </Link>
+          </div>
         </div>
         <div className={styles.desc}>{`欢迎登陆${SITE.name}`}</div>
       </div>

@@ -31,7 +31,7 @@ service.interceptors.response.use(
   },
   (error: AxiosError) => {
     const status = error.response?.status;
-    const message = error.response?.data.message;
+    const message = error?.response?.data?.message;
 
     // 登录过期
     if (status === 401) {
@@ -41,8 +41,11 @@ service.interceptors.response.use(
       return;
     }
 
-    notification.error({ message: "系统错误", description: message });
-    return Promise.reject("系统错误");
+    const { pathname } = window.location;
+    if (!["/user/login"].includes(pathname)) {
+      notification.error({ message: "系统错误", description: message });
+    }
+    return Promise.reject(error?.response?.data);
   }
 );
 

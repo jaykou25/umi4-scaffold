@@ -10,10 +10,10 @@ export const SITE = {
 export default {
   npmClient: "yarn",
   proxy: proxy[REACT_APP_ENV || "dev"],
-  initialState: {},
-  model: {},
   plugins: [
     "@umijs/plugins/dist/initial-state.js",
     "@umijs/plugins/dist/model.js",
   ],
+  initialState: {},
+  model: {},
 };

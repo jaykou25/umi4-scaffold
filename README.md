@@ -47,10 +47,38 @@ export function patchClientRoutes({ routes }) {
 #### BasicLayout
 基础布局中我们使用`ProLayout`组件, 并且版本号是`v6`; `"@ant-design/pro-layout": "^6",`
 
-`v7`的版本目前来看不稳定, 保持观察. 等官网的https://preview.pro.ant.design/使用了v7版本后我们再换.
+`v7`的版本目前来看不稳定, 保持观察. 等官网的https://preview.pro.ant.design/ 使用了v7版本后我们再换.
 
 `v6`的api可以看它的源码, 源码地址: https://github.com/ant-design/pro-components/tree/%40ant-design/pro-layout%406.38.22, 把分支切换到`@ant-design/pro-layout@6.38.22`
 
 ProLayout的api繁多, 代表它的每个部分都可以定制.
 
 ![prolayout api](https://github.com/jaykou25/umi4-scaffold/blob/master/proLayout.png)]
+
+ProLayout左侧的菜单数据从全局数据流(initialState)中去取.
+
+### 数据流
+umijs有两个插件, 可以用于数据流管理, 是一种基于hooks的轻量级数据管理方案.
+
+```bash
+# 安装依赖
+yarn add @umijs/plugins --dev
+```
+
+```js
+// 在配置文件中开启
+{
+  plugins: [
+    "@umijs/plugins/dist/initial-state.js",
+    "@umijs/plugins/dist/model.js",
+  ],
+  initialState: {},
+  model: {},
+}
+```
+#### 全局初始状态(initialState)
+在`src/app.tsx`文件中导出方法`getInitialState()`, 在这个方法里获取全局初始状态.
+
+菜单和用户信息可以在这里获取
+
+

@@ -1,20 +1,21 @@
 import { Navigate, history, createSearchParams } from "umi";
 
-import { queryMenu } from "@/apis";
+import { queryCurrent, queryMenu } from "@/apis";
 
 import "antd/dist/antd.css";
 import { isLogin } from "./utils/auth";
 import { inWhiteList } from "./utils/whiteList";
 import { fullPath } from "./utils/path";
+import { normalizeMenu } from "./utils/menu";
 
-export async function getInitialState() {
+export async function getInitialState(): Promise<any> {
   console.log("get init state");
 
   const { pathname } = window.location;
 
   // sso页面不处理, 直接oldRender()
   if (/^\/sso/.test(pathname)) {
-    return;
+    return {};
   }
 
   // 未登陆且不在白名单
@@ -27,15 +28,23 @@ export async function getInitialState() {
 
   // 已登陆
   // 对于登陆页以外的页面要获取菜单数据, 用于权限
-  if (isLogin() && !/^\/user/.test(pathname)) {
+  if (isLogin()) {
     try {
       const menuData = await queryMenu();
-      console.log({ menuData });
-      return { menuData };
+      const menu = normalizeMenu(menuData);
+
+      // 获取用户信息
+      const currentUser = await queryCurrent();
+
+      console.log("initState:", { menu, currentUser });
+
+      return { menu, currentUser };
     } catch (e) {
-      return;
+      return {};
     }
   }
+
+  return {};
 }
 
 export function patchClientRoutes({ routes }) {
