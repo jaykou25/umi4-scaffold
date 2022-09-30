@@ -18,7 +18,8 @@
     "antd": "^4.23.2",
     "axios": "^0.27.2",
     "jsencrypt": "^3.2.1",
-    "umi": "^4.0.22"
+    "umi": "^4.0.22",
+    "umi-plugin-keep-alive": "^0.0.1-beta.34"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

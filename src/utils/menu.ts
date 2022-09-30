@@ -1,12 +1,18 @@
-function normalizeItem(item) {
+type PatchItemType = (item: any) => Record<string, any>;
+
+function normalizeItem(item, patchItem?: PatchItemType) {
+  const patchResult = patchItem ? patchItem(item) : {};
   return {
     ...item,
     icon: item.meta?.icon,
     hideInMenu: item.hidden,
-    children: item.children ? item.children.map((child) => normalizeItem(child)) : [],
+    ...patchResult,
+    children: item.children
+      ? item.children.map((child) => normalizeItem(child, patchItem))
+      : [],
   };
 }
 
-export function normalizeMenu(menuData) {
-  return menuData.map((row) => normalizeItem(row));
+export function normalizeMenu(menuData, patchItem?: PatchItemType) {
+  return menuData.map((row) => normalizeItem(row, patchItem));
 }

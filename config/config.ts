@@ -13,6 +13,7 @@ export default {
   plugins: [
     "@umijs/plugins/dist/initial-state.js",
     "@umijs/plugins/dist/model.js",
+    "umi-plugin-keep-alive",
   ],
   initialState: {},
   model: {},
