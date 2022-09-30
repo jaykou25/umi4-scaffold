@@ -35,8 +35,4 @@ export default (api: IApi) => {
           animation: weuiLoading 0.6s steps(12, end) infinite, show 0.9s;
     }`,
   ]);
-  api.addHTMLHeadScripts(() => [`console.log('hello world from head')`]);
-  api.addHTMLScripts(() => [`console.log('hello world')`]);
-  api.addEntryCodeAhead(() => [`console.log('entry code ahead')`]);
-  api.addEntryCode(() => [`console.log('entry code')`]);
 };
